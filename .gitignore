@@ -1,0 +1,11 @@
+#ignore all folders
+Project/**/
+
+#ignore all files
+/Project/**
+
+#do NOT ignore .vhd files
+!/Project/*.vhd
+
+#do NOT ignore main .qpf file
+!/Project/*.qpf
