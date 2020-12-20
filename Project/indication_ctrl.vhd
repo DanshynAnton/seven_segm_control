@@ -21,18 +21,23 @@ architecture rtl of indication_ctrl is
 begin
 	process(clk)
 	begin
-		for i in characters'range loop
-			out_bits((i * 8 + 7) downto i * 8) <= ind_one_symb(characters(i));
-		end loop;
+		if (rising_edge(clk)) then
+			for i in characters'range loop
+				out_bits((i * 8 + 7) downto i * 8) <= ind_one_symb(characters(i));
+			end loop;
+		end if;
 	end process;
 
 	process(clk)
 	begin
-		if ready = '1' then
-			bite_for_spi <= out_bits;
-			start        <= '1';
-		else
-			start <= '0';
+		--send new data to SPI if SPI is ready.
+		if (rising_edge(clk)) then
+			if ready = '1' then
+				bite_for_spi <= out_bits;
+				start        <= '1';
+			else
+				start <= '0';
+			end if;
 		end if;
 	end process;
 end rtl;

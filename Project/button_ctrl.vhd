@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
+--Component that correct button signal
 entity button_ctrl is
 	port(
 		button_in  : in  std_logic;
@@ -10,8 +11,8 @@ entity button_ctrl is
 end button_ctrl;
 
 architecture rtl of button_ctrl is
-	signal old      : std_logic := '0';
-	signal btn_wait : integer   := 0;
+	signal old      : std_logic := '0'; --Old signal value
+	signal btn_wait : integer   := 0; --counter
 begin
 	process(button_clk)
 	begin

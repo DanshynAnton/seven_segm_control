@@ -20,22 +20,26 @@ architecture rtl of main_block is
 	signal old_ns : std_logic := '0';
 	signal cur_ns : NUM_SYS   := DECIMAL;
 begin
-	change_num_system : process(numeral_system)
+	change_num_system : process(clk)
 	begin
-		if (old_ns = '0') and (numeral_system = '1') then
-			case cur_ns is
-				when DECIMAL => cur_ns <= HEX;
-				when HEX     => cur_ns <= DECIMAL;
-			end case;
+		if (rising_edge(clk)) then
+			if (old_ns = '0') and (numeral_system = '1') then
+				case cur_ns is
+					when DECIMAL => cur_ns <= HEX;
+					when HEX     => cur_ns <= DECIMAL;
+				end case;
+			end if;
+			old_ns <= numeral_system;
 		end if;
-		old_ns <= numeral_system;
 	end process change_num_system;
 
 	form_char : process(clk)
 	begin
-		case cur_ns is
-			when DECIMAL => out_information <= bin_to_dec_symb(buffer_data);
-			when HEX     => out_information <= bin_to_hex_symb(buffer_data);
-		end case;
+		if (rising_edge(clk)) then
+			case cur_ns is
+				when DECIMAL => out_information <= bin_to_dec_symb(buffer_data);
+				when HEX     => out_information <= bin_to_hex_symb(buffer_data);
+			end case;
+		end if;
 	end process form_char;
 end rtl;
