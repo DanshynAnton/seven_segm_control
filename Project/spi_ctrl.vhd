@@ -5,15 +5,14 @@ entity spi_ctrl is
 	generic(
 		CHARACTER_COUNT : natural := 3  --max value is 180 (3 characters) and B4h (3 characters)
 	);
-
 	port(
-		start       : in  std_logic;
+		start       : in  std_logic;    --Signal to start indicate new value
 		spi_in_date : in  std_logic_vector((CHARACTER_COUNT * 8 - 1) downto 0); --array of characters from main block (main_block)
 		clk         : in  std_logic;
-		mosi        : out std_logic;
-		sck         : out std_logic;
-		ss          : out std_logic;
-		ready       : out std_logic := '0'
+		mosi        : out std_logic;    --master out slave in
+		sck         : out std_logic;    --slave clk
+		ss          : out std_logic;    --slave select
+		ready       : out std_logic := '0' --signal from SPI thet all data is indicated
 	);
 end spi_ctrl;
 

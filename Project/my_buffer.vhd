@@ -7,9 +7,11 @@ entity my_buffer is
 	);
 
 	port(
-		data_in  : in  std_logic_vector((BUFFER_DATA_WIDTH - 1) downto 0);
+		data_in  : in  std_logic_vector((BUFFER_DATA_WIDTH - 1) downto 0); --input data
+		data_en  : in  std_logic;       --Signal of available data
 		clk      : in  std_logic;
-		data_out : out std_logic_vector((BUFFER_DATA_WIDTH - 1) downto 0)
+		srst     : in  std_logic;       -- synchronous reset;
+		data_out : out std_logic_vector((BUFFER_DATA_WIDTH - 1) downto 0) --output data
 	);
 
 end my_buffer;
@@ -17,13 +19,22 @@ end my_buffer;
 architecture rtl of my_buffer is
 	signal buf_data : std_logic_vector((BUFFER_DATA_WIDTH - 1) downto 0) := (others => '0');
 begin
-	in_dat : process(data_in)
+	in_dat : process(clk)
 	begin
-		buf_data <= data_in;
+		if (rising_edge(clk)) then
+			if (srst = '1') then
+				--Reset data
+			elsif (data_en = '1') then
+				--If data available - wright in buffer
+				buf_data <= data_in;
+			end if;
+		end if;
 	end process in_dat;
 
 	out_dat : process(clk)
 	begin
-		data_out <= buf_data;
+		if (rising_edge(clk)) then
+			data_out <= buf_data;
+		end if;
 	end process out_dat;
 end rtl;

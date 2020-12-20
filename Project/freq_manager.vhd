@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
+--Component that devide frequency
 entity freq_manager is
 	generic(
 		FREQ_IN  : natural := 50_000_000; --50MG

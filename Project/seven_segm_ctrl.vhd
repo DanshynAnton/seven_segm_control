@@ -10,8 +10,10 @@ entity seven_segm_ctrl is
 
 	port(
 		input_data : in  std_logic_vector((TOP_LEVEL_BUFFER_DATA_WIDTH - 1) downto 0);
+		data_exist : in  std_logic;
 		button     : in  std_logic;
 		clk        : in  std_logic;
+		sreset     : in  std_logic;
 		spi_mosi   : out std_logic;
 		spi_sck    : out std_logic;
 		spi_ss     : out std_logic
@@ -37,7 +39,7 @@ architecture rtl of seven_segm_ctrl is
 			FREQ_BTN  : natural := 1_000_000; --1MHz
 			FREQ_MAIN : natural := 1_000_000; --1MHz
 			FREQ_IND  : natural := 1_000_000; --1MHz
-			FREQ_SPI  : natural := 1_000_000 --1MHz
+			FREQ_SPI  : natural := 1_000_000*(TOP_LEVEL_CHARACTER_COUNT*32 + 2) --1MHz
 		);
 		port(
 			clk_in         : in  std_logic; --input clk from generator
@@ -57,9 +59,11 @@ architecture rtl of seven_segm_ctrl is
 		);
 
 		port(
-			data_in  : in  std_logic_vector((BUFFER_DATA_WIDTH - 1) downto 0);
+			data_in  : in  std_logic_vector((BUFFER_DATA_WIDTH - 1) downto 0); --input data
+			data_en  : in  std_logic;   --Signal of available data
 			clk      : in  std_logic;
-			data_out : out std_logic_vector((BUFFER_DATA_WIDTH - 1) downto 0)
+			srst     : in  std_logic;   -- synchronous reset;
+			data_out : out std_logic_vector((BUFFER_DATA_WIDTH - 1) downto 0) --output data
 		);
 
 	end component my_buffer;
@@ -131,7 +135,7 @@ architecture rtl of seven_segm_ctrl is
 begin
 	pm_btn_ctrl : button_ctrl port map(button_in => button, button_clk => freq_btn, button_out => btn_main);
 	pm_freq_conv : frequency_conv port map(clk_in => clk, clk_buffer => freq_buffer, clk_button => freq_btn, clk_main => freq_main, clk_indication => freq_indc, clk_spi => freq_spi);
-	pm_buffer : my_buffer port map(data_in => input_data, clk => freq_buffer, data_out => buffer_main);
+	pm_buffer : my_buffer port map(data_in => input_data, data_en => data_exist, clk => freq_buffer, srst => sreset, data_out => buffer_main);
 	pm_main : main_block port map(buffer_data => buffer_main, numeral_system => btn_main, clk => freq_main, out_information => main_indc);
 	pm_indc : indication_ctrl port map(characters => main_indc, clk => freq_indc, ready => ready_sign, bite_for_spi => indc_spi, start => start_sign);
 	pm_spi : spi_ctrl port map(start => start_sign, spi_in_date => indc_spi, clk => freq_spi, mosi => spi_mosi, sck => spi_sck, ss => spi_ss, ready => ready_sign);
