@@ -8,7 +8,7 @@ entity frequency_conv is
 		FREQ_BTN  : natural := 1_000_000; --1MHz
 		FREQ_MAIN : natural := 1_000_000; --1MHz
 		FREQ_IND  : natural := 1_000_000; --1MHz
-		FREQ_SPI  : natural := 1_000_000  --1MHz
+		FREQ_SPI  : natural := 1_000_000 --1MHz
 	);
 	port(
 		clk_in         : in  std_logic; --input clk from generator

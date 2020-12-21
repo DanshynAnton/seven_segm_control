@@ -5,7 +5,10 @@ Project/**/
 /Project/**
 
 #do NOT ignore .vhd files
+!/Project/test_benches/*.vhd
 !/Project/*.vhd
+!/Nios2Project/*.vhd
 
 #do NOT ignore main .qpf file
 !/Project/*.qpf
+!/Nios2Project/*.qpf
