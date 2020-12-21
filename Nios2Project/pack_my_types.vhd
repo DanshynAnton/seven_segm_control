@@ -8,8 +8,7 @@ package pack_my_types is
 
 	pure function hex_one_symb(signal bin_vector : std_logic_vector(3 downto 0)) return SYMB;
 	procedure dec_one_symb(variable dec : in natural; variable res : out SYMB);
-	pure function ind_all_symb(signal smbs : char_array(2 downto 0)) return std_logic_vector;
-	procedure ind_one_symb(variable smb : in SYMB; variable res : out std_logic_vector((8 - 1) downto 0));
+	pure function ind_one_symb(signal smb : SYMB) return std_logic_vector;
 	pure function bin_to_hex_symb(signal bin_vector : std_logic_vector) return char_array;
 	pure function bin_to_dec_symb(signal bin_vector : std_logic_vector) return char_array;
 end package;
@@ -36,7 +35,6 @@ package body pack_my_types is
 			when "1101" => out_char := SD;
 			when "1110" => out_char := SE;
 			when "1111" => out_char := SF;
-			when others => out_char := SSPACE;
 		end case;
 		return out_char;
 	end hex_one_symb;
@@ -110,19 +108,7 @@ package body pack_my_types is
 		return out_char;
 	end bin_to_dec_symb;
 
-	pure function ind_all_symb(signal smbs : char_array(2 downto 0)) return std_logic_vector is
-		variable cur_smb    : SYMB                                   := SSPACE;
-		variable out_vector : std_logic_vector((3 * 8 - 1) downto 0) := (others => '0');
-		--signal out_bits : std_logic_vector((3 * 8 - 1) downto 0) := (others => '0');
-	begin
-		for i in smbs'range loop
-			cur_smb := smbs(i);
-			ind_one_symb(cur_smb, out_vector((i * 8 + 7) downto i * 8));
-		end loop;
-		return out_vector;
-	end ind_all_symb;
-
-	procedure ind_one_symb(variable smb : in SYMB; variable res : out std_logic_vector((8 - 1) downto 0)) is
+	pure function ind_one_symb(signal smb : SYMB) return std_logic_vector is
 		variable out_vector : std_logic_vector(7 downto 0);
 	begin
 		case smb is
@@ -146,7 +132,6 @@ package body pack_my_types is
 			when SSPACE => out_vector := "00000000";
 			when others => out_vector := "01000000";
 		end case;
-		res := out_vector;
-		--return out_vector;
+		return out_vector;
 	end ind_one_symb;
 end package body;

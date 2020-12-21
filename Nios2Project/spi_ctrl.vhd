@@ -36,7 +36,6 @@ begin
 					sck  <= '0';
 					if (start = '1') then
 						cur_state <= STATE_DATA;
-						ready     <= '0';
 						i         := 0;
 						ss        <= '1';
 						cur_data  <= spi_in_date;

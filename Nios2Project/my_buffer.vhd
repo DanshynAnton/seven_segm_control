@@ -11,7 +11,7 @@ entity my_buffer is
 		data_en  : in  std_logic;       --Signal of available data
 		clk      : in  std_logic;
 		srst     : in  std_logic;       -- synchronous reset;
-		data_out : out std_logic_vector((BUFFER_DATA_WIDTH - 1) downto 0) := (others => '0') --output data
+		data_out : out std_logic_vector((BUFFER_DATA_WIDTH - 1) downto 0) --output data
 	);
 
 end my_buffer;
@@ -24,7 +24,6 @@ begin
 		if (rising_edge(clk)) then
 			if (srst = '1') then
 				--Reset data
-				buf_data <= (others => '0');
 			elsif (data_en = '1') then
 				--If data available - wright in buffer
 				buf_data <= data_in;

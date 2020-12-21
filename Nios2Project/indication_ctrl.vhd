@@ -17,20 +17,21 @@ entity indication_ctrl is
 end indication_ctrl;
 
 architecture rtl of indication_ctrl is
-	--signal out_bits : std_logic_vector((CHARACTER_COUNT * 8 - 1) downto 0) := (others => '0');
-	--variable sss : std_logic_vector((CHARACTER_COUNT * 8 - 1) downto 0) := (others => '0');
+	signal out_bits : std_logic_vector((CHARACTER_COUNT * 8 - 1) downto 0) := (others => '0');
 begin
 	process(clk)
 	begin
-		--sss <= characters;
+		if (rising_edge(clk)) then
+			for i in characters'range loop
+				out_bits((i * 8 + 7) downto i * 8) <= ind_one_symb(characters(i));
+			end loop;
+		end if;
 	end process;
 
 	process(clk)
-		variable out_bits : std_logic_vector((CHARACTER_COUNT * 8 - 1) downto 0) := (others => '0');
 	begin
+		--send new data to SPI if SPI is ready.
 		if (rising_edge(clk)) then
-			out_bits := ind_all_symb(characters);
-			--ind_one_symb(variable smb : in SYMB; signal out_vector: out std_logic_vector((8 - 1) downto 0))
 			if ready = '1' then
 				bite_for_spi <= out_bits;
 				start        <= '1';
