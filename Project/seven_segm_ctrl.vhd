@@ -39,7 +39,7 @@ architecture rtl of seven_segm_ctrl is
 			FREQ_BTN  : natural := 100_000; --100KHz
 			FREQ_MAIN : natural := 10_000; --10KHz
 			FREQ_IND  : natural := 10_000; --10KHz
-			FREQ_SPI  : natural := 1_000_000 --1MHz
+			FREQ_SPI  : natural := 10_000_000 --10MHz
 		);
 		port(
 			clk_in         : in  std_logic; --input clk from generator
