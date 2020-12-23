@@ -35,19 +35,11 @@ architecture rtl of seven_segm_ctrl is
 	component frequency_conv is
 		generic(
 			FREQ_IN   : natural := 50_000_000; --50MHz
-<<<<<<< HEAD
 			FREQ_BUF  : natural := 10_000; --10KHz
 			FREQ_BTN  : natural := 100_000; --100KHz
 			FREQ_MAIN : natural := 10_000; --10KHz
 			FREQ_IND  : natural := 10_000; --10KHz
 			FREQ_SPI  : natural := 1_000_000 --1MHz
-=======
-			FREQ_BUF  : natural := 1_000; --1MHz
-			FREQ_BTN  : natural := 1_000; --1MHz
-			FREQ_MAIN : natural := 1_000; --1MHz
-			FREQ_IND  : natural := 1_000; --1MHz
-			FREQ_SPI  : natural := 1_000*(TOP_LEVEL_CHARACTER_COUNT*24 + 2) --1MHz
->>>>>>> 0d5cf5ee3533f21834cad92191a1c163173ea7f4
 		);
 		port(
 			clk_in         : in  std_logic; --input clk from generator
